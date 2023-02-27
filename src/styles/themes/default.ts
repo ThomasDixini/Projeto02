@@ -1,4 +1,4 @@
 export const DefaultThemes = {
-    primary: "purple",
-    secondary: "white",
+  primary: 'purple',
+  secondary: 'white',
 }
