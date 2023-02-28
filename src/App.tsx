@@ -7,7 +7,6 @@ import { Router } from './Router'
 export function App() {
   return (
     <ThemeProvider theme={DefaultThemes}>
-
       <BrowserRouter>
         <Router />
       </BrowserRouter>
