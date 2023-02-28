@@ -20,6 +20,7 @@ html {
 body {
     font-family: "Roboto", sans-serif;
     font-weight: normal;
+    background-color: ${(props) => props.theme['gray-100']};
 }
 
 input, textarea, strong, button {
