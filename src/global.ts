@@ -42,7 +42,7 @@ button {
 }
 
 :not(input):focus {
-    outline: 2px solid ${props => props.theme['green']};
+    outline: 2px solid ${(props) => props.theme.green};
     border-radius: 8px;
 }
 
