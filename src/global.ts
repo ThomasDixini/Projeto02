@@ -41,4 +41,9 @@ button {
     opacity: 0.6;
 }
 
+:not(input):focus {
+    outline: 2px solid ${props => props.theme['green']};
+    border-radius: 8px;
+}
+
 `
