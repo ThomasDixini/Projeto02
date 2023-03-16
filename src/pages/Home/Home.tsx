@@ -11,7 +11,8 @@ import { useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import zod from 'zod'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { differenceInSeconds } from 'date-fns'
 
 const newCycleFormValidationSchema = zod.object(
   {
@@ -24,15 +25,16 @@ const newCycleFormValidationSchema = zod.object(
 
 type InputTypes = zod.infer<typeof newCycleFormValidationSchema>;
 
-interface Cycles {
+interface Cycle {
   id: string;
   task: string;
   minutesAmount: number;
+  startDate: Date;
 }
 
 export function Home() {
 
-  const [cycles, setCycles] = useState<Cycles[]>([]);
+  const [cycles, setCycles] = useState<Cycle[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [amountSecondsPast, setAmountSecondsPast] = useState(0);
 
@@ -47,10 +49,11 @@ export function Home() {
   function handleCreateNewCycle(data: InputTypes) {
     const id = String(new Date().getTime());
 
-    const newCycle = {
+    const newCycle : Cycle = {
       id,
       task: data.task,
-      minutesAmount: data.minutesAmount
+      minutesAmount: data.minutesAmount,
+      startDate: new Date(),
     }
 
     setCycles((state) => [...state, newCycle]);
@@ -59,6 +62,14 @@ export function Home() {
   }
 
   const activeCycle = cycles.find((cycle) => cycle.id == activeId)
+
+  useEffect(() => {
+    if(activeCycle){
+      setInterval(() => {
+        setAmountSecondsPast(differenceInSeconds(new Date(), activeCycle.startDate))
+      },1000);
+    }
+  }, [activeCycle])
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0;
