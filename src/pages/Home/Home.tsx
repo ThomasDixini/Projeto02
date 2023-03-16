@@ -14,63 +14,69 @@ import zod from 'zod'
 import { useEffect, useState } from 'react'
 import { differenceInSeconds } from 'date-fns'
 
-const newCycleFormValidationSchema = zod.object(
-  {
-    task: zod
-    .string()
-    .min(1, "Informe a tarefa"),
-    minutesAmount: zod.number().min(5, "O ciclo precisa ser de no minímo 5").max(60, "O máximo precisa ser de no máximo 60")
-  }
-)
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(5, 'O ciclo precisa ser de no minímo 5')
+    .max(60, 'O máximo precisa ser de no máximo 60'),
+})
 
-type InputTypes = zod.infer<typeof newCycleFormValidationSchema>;
+type InputTypes = zod.infer<typeof newCycleFormValidationSchema>
 
 interface Cycle {
-  id: string;
-  task: string;
-  minutesAmount: number;
-  startDate: Date;
+  id: string
+  task: string
+  minutesAmount: number
+  startDate: Date
 }
 
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeId, setActiveId] = useState<string | null>(null)
+  const [amountSecondsPast, setAmountSecondsPast] = useState(0)
 
-  const [cycles, setCycles] = useState<Cycle[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [amountSecondsPast, setAmountSecondsPast] = useState(0);
-
-  const { register, handleSubmit, watch, formState: {errors}, reset } = useForm<InputTypes>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<InputTypes>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: '',
-      minutesAmount: 0
-    }
-  });
+      minutesAmount: 0,
+    },
+  })
 
   function handleCreateNewCycle(data: InputTypes) {
-    const id = String(new Date().getTime());
+    const id = String(new Date().getTime())
 
-    const newCycle : Cycle = {
+    const newCycle: Cycle = {
       id,
       task: data.task,
       minutesAmount: data.minutesAmount,
       startDate: new Date(),
     }
 
-    setCycles((state) => [...state, newCycle]);
-    setActiveId(id);
-    setAmountSecondsPast(0);
-    reset();
+    setCycles((state) => [...state, newCycle])
+    setActiveId(id)
+    setAmountSecondsPast(0)
+    reset()
   }
 
   const activeCycle = cycles.find((cycle) => cycle.id == activeId)
 
   useEffect(() => {
-    let interval: any;
+    let interval: any
 
-    if(activeCycle){
+    if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPast(differenceInSeconds(new Date(), activeCycle.startDate))
-      },1000);
+        setAmountSecondsPast(
+          differenceInSeconds(new Date(), activeCycle.startDate),
+        )
+      }, 1000)
     }
 
     return () => {
@@ -78,22 +84,21 @@ export function Home() {
     }
   }, [activeCycle])
 
-  
-  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
-  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0;
-  
-  const minutesAmount = Math.floor(currentSeconds / 60);
-  const secondsAmount = currentSeconds % 60;
-  
-  const minutes = String(minutesAmount).padStart(2, "0")
-  const seconds = String(secondsAmount).padStart(2, "0")
-  
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
+
   const task = watch('task')
-  const isTaskDisabled = !task;
-  
+  const isTaskDisabled = !task
+
   useEffect(() => {
-    if(activeCycle){
-      document.title = `${minutes}:${seconds}` 
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds}`
     }
   }, [minutes, seconds, activeCycle])
 
@@ -121,7 +126,7 @@ export function Home() {
             id="minutesAmount"
             placeholder="00"
             step={5}
-            {...register('minutesAmount', {valueAsNumber: true})}
+            {...register('minutesAmount', { valueAsNumber: true })}
           />
 
           <span> minutos </span>

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fixError": "npx eslint src/ --fix --ext .ts, --ext .tsx"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",

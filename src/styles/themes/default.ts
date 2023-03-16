@@ -6,7 +6,7 @@ export const DefaultThemes = {
   'red-dark': '#7A1921',
   red: '#AB222E',
 
-  'yellow': '#FBA94C',
+  yellow: '#FBA94C',
 
   'gray-100': '#121214',
   'gray-200': '#202024',
