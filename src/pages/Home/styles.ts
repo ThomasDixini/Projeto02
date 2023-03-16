@@ -85,22 +85,36 @@ export const CountdownContainer = styled.div`
   }
 `
 
-export const StartCountdownButton = styled.button`
+export const BaseCountdownButton = styled.button`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
 
-  background-color: ${(props) => props.theme.green};
-  color: ${(props) => props.theme['gray-700']};
+  
 
   border: 0;
   border-radius: 8px;
   padding: 1rem;
   font-weight: bold;
 
+  
+`
+
+export const StartCountdownButton = styled(BaseCountdownButton)`
+  background-color: ${(props) => props.theme.green};
+  color: ${(props) => props.theme['gray-700']};
+
   &:not(:disabled):hover {
     background-color: ${(props) => props.theme['green-dark']};
+  }
+`
+export const StopCountdownButton = styled(BaseCountdownButton)`
+  background-color: ${(props) => props.theme.red};
+  color: ${(props) => props.theme['gray-700']};
+
+  &:not(:disabled):hover {
+    background-color: ${(props) => props.theme['red-dark']};
   }
 `
