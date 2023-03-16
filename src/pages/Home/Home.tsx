@@ -78,18 +78,25 @@ export function Home() {
     }
   }, [activeCycle])
 
+  
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0;
-
+  
   const minutesAmount = Math.floor(currentSeconds / 60);
   const secondsAmount = currentSeconds % 60;
-
+  
   const minutes = String(minutesAmount).padStart(2, "0")
   const seconds = String(secondsAmount).padStart(2, "0")
   
   const task = watch('task')
   const isTaskDisabled = !task;
   
+  useEffect(() => {
+    if(activeCycle){
+      document.title = `${minutes}:${seconds}` 
+    }
+  }, [minutes, seconds, activeCycle])
+
   return (
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
