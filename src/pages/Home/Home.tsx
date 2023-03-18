@@ -19,7 +19,7 @@ const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
   minutesAmount: zod
     .number()
-    .min(5, 'O ciclo precisa ser de no minímo 5')
+    .min(1, 'O ciclo precisa ser de no minímo 5')
     .max(60, 'O máximo precisa ser de no máximo 60'),
 })
 
@@ -31,6 +31,7 @@ interface Cycle {
   minutesAmount: number
   startDate: Date
   interruptDate?: Date
+  finishedDate?: Date
 }
 
 export function Home() {
@@ -84,14 +85,30 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id == activeId)
 
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+
   useEffect(() => {
     let interval: any
 
     if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPast(
-          differenceInSeconds(new Date(), activeCycle.startDate),
-        )
+        const secondsDifference = differenceInSeconds(new Date(), activeCycle.startDate)
+
+        if(secondsDifference >= totalSeconds) {
+          setCycles(
+            cycles.map((cycle) => {
+              if(cycle.id == activeId){
+                return {...cycle, finishedDate: new Date()}
+              } else {
+                return cycle
+              }
+            })
+          )
+
+          setAmountSecondsPast(totalSeconds)
+        } else {
+          setAmountSecondsPast(secondsDifference)
+        }
       }, 1000)
     }
 
@@ -100,7 +117,6 @@ export function Home() {
     }
   }, [activeCycle])
 
-  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPast : 0
 
   const minutesAmount = Math.floor(currentSeconds / 60)
@@ -115,6 +131,8 @@ export function Home() {
   useEffect(() => {
     if (activeCycle) {
       document.title = `${minutes}:${seconds}`
+    } else {
+      document.title = "Ignite Timer"
     }
   }, [minutes, seconds, activeCycle])
 
@@ -143,7 +161,7 @@ export function Home() {
             type="number"
             id="minutesAmount"
             placeholder="00"
-            step={5}
+            step={1}
             {...register('minutesAmount', { valueAsNumber: true })}
           />
 
