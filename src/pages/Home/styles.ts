@@ -92,14 +92,10 @@ export const BaseCountdownButton = styled.button`
   align-items: center;
   gap: 0.5rem;
 
-  
-
   border: 0;
   border-radius: 8px;
   padding: 1rem;
   font-weight: bold;
-
-  
 `
 
 export const StartCountdownButton = styled(BaseCountdownButton)`
