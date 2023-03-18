@@ -106,8 +106,6 @@ export function CyclesContextProvider({
         newCycle,
       },
     })
-    // setCycles((state) => [...state, newCycle])
-    // setActiveId(id)
     setAmountSecondsPast(0)
   }
 
@@ -118,17 +116,6 @@ export function CyclesContextProvider({
         activeId,
       },
     })
-    // setCycles(
-    //     cycles.map((cycle) => {
-    //     if (cycle.id === activeId) {
-    //         return { ...cycle, interruptDate: new Date() }
-    //     } else {
-    //         return cycle
-    //     }
-    //     }),
-    // )
-
-    // setActiveId(null)
   }
 
   function markCurrentCycleFinished() {
@@ -138,15 +125,6 @@ export function CyclesContextProvider({
         activeId,
       },
     })
-    // setCycles(
-    //     cycles.map((cycle) => {
-    //         if (cycle.id === activeId) {
-    //             return { ...cycle, finishedDate: new Date() }
-    //         } else {
-    //             return cycle
-    //         }
-    //     }),
-    // )
   }
 
   function secondsPassed(seconds: number) {
