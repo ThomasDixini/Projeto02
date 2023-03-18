@@ -25,7 +25,7 @@ export function History() {
           <tbody>
             {
               cycles.map((cycle) => (
-                <tr>
+                <tr key={cycle.id}>
                   <td> { cycle.task } </td>
                   <td> { cycle.minutesAmount } minutos </td>
                   <td> { formatDistanceToNow(cycle.startDate, {
